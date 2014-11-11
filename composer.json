@@ -1,0 +1,35 @@
+{
+    "name": "mendoframework/auth",
+    "description": "Mendo Auth Component",
+    "license": "BSD-3-Clause",
+    "authors": [
+        {
+            "name": "Mathieu Decaffmeyer",
+            "email": "mdecaffmeyer@gmail.com"
+        }
+    ],
+    "keywords": [
+        "mf", "mendoframework", "mendo framework",
+        "auth", "authentication", "authenticator"
+    ],
+    "homepage": "https://github.com/mendoframework",
+    "autoload": {
+        "psr-4": {
+            "Mendo\\Auth\\": "src/"
+        }
+    },
+    "require": {
+        "php": ">=5.6.0",
+        "mendoframework/session": "~1.0"
+    },
+    "require-dev": {
+        "pimple/pimple": "3.0.*@dev",
+        "phpunit/phpunit": "4.3.*@dev",
+        "fabpot/php-cs-fixer": "*@dev"
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0.x-dev"
+        }
+    }
+}
