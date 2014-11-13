@@ -81,8 +81,8 @@ It can additionally add the user's role (for ACL) and other column data.
 
 While the above works perfectly for the first request, the user's data will be lost on subsequent requests.
 One way to achieve persistence is to store the user data in session. 
-```Mendo\Auth\Persistence\Session``` acts like a decorator over another 
-```CurrentUserInterface``` implementation, allowing to persist the data in session.
+```Mendo\Auth\Persistence\Session``` acts like a decorator over ```Mendo\Auth\CurrentUser``` (or any 
+```Mendo\Auth\CurrentUserInterface``` implementation), allowing to persist the data in session.
 
 ```php
 $user = new Mendo\Auth\CurrentUser();
