@@ -56,6 +56,8 @@ interface CurrentUserInterface extends AuthenticatableUserInterface
     /**
      * @param mixed $name
      *
+     * @throws \InvalidArgumentException
+     *
      * @return bool
      */
     public function hasProperty($name);
@@ -69,6 +71,8 @@ interface CurrentUserInterface extends AuthenticatableUserInterface
      * an exception will be thrown.
      *
      * @param mixed $args
+     *
+     * @throws \InvalidArgumentException
      *
      * @return mixed
      */

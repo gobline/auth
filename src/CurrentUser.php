@@ -128,6 +128,10 @@ class CurrentUser implements CurrentUserInterface
      */
     public function hasProperty($name)
     {
+        if ((string) $name === '') {
+            throw new \InvalidArgumentException('$name cannot be empty');
+        }
+
         return array_key_exists($name, $this->properties);
     }
 
