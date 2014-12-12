@@ -19,7 +19,7 @@ use \PDO;
  */
 class DbAuthenticatorTest extends PHPUnit_Framework_TestCase
 {
-    private $authenticator;
+    private $pdo;
 
     public function setUp()
     {
@@ -28,10 +28,10 @@ class DbAuthenticatorTest extends PHPUnit_Framework_TestCase
             PDO::ATTR_PERSISTENT => true,
             PDO::ATTR_ERRMODE => PDO::ERRMODE_EXCEPTION,
         ];
-        $pdo = new PDO($dsn, null, null, $options);
+        $this->pdo = new PDO($dsn, null, null, $options);
 
         $sql = 'DROP TABLE IF EXISTS users';
-        $stmt = $pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
 
         $sql =
@@ -45,10 +45,10 @@ class DbAuthenticatorTest extends PHPUnit_Framework_TestCase
                 nb_login INTEGER DEFAULT 0,
                 UNIQUE (id)
             );';
-        $stmt = $pdo->prepare($sql);
+        $stmt = $this->pdo->prepare($sql);
         $stmt->execute();
 
-        $this->insertDb($pdo, 'users',
+        $this->insert($this->pdo, 'users',
             [
                 'first_name' => 'Mathieu',
                 'last_name' => 'Decaffmeyer',
@@ -57,7 +57,7 @@ class DbAuthenticatorTest extends PHPUnit_Framework_TestCase
             ]
         );
 
-        $this->insertDb($pdo, 'users',
+        $this->insert($this->pdo, 'users',
             [
                 'first_name' => 'Foo',
                 'last_name' => 'Bar',
@@ -65,6 +65,11 @@ class DbAuthenticatorTest extends PHPUnit_Framework_TestCase
                 'password' => 'qwerty',
             ]
         );
+    }
+
+    public function testDbAuthenticator()
+    {
+        $currentUser = new CurrentUser();
 
         $metadata = new TableMetadata('users');
         $metadata
@@ -73,28 +78,23 @@ class DbAuthenticatorTest extends PHPUnit_Framework_TestCase
             ->setColumnPassword('password')
             ->setPasswordEncryption('clear');
 
-        $this->authenticator = new DbAuthenticator($pdo, $metadata);
-    }
+        $authenticator = new DbAuthenticator($this->pdo, $metadata);
 
-    public function testDbAuthenticator()
-    {
-        $currentUser = new CurrentUser();
+        $authenticator->setIdentity('mdecaffmeyer@gmail.com');
+        $authenticator->setCredential('123456');
 
-        $this->authenticator->setIdentity('mdecaffmeyer@gmail.com');
-        $this->authenticator->setCredential('123456');
-
-        $this->assertTrue($this->authenticator->authenticate($currentUser));
+        $this->assertTrue($authenticator->authenticate($currentUser));
 
         $this->assertTrue($currentUser->isAuthenticated());
         $this->assertEquals(1, $currentUser->getId());
         $this->assertSame('mdecaffmeyer@gmail.com', $currentUser->getLogin());
 
-        $this->authenticator->setIdentity('mdecaffmeyer@gmail.com');
-        $this->authenticator->setCredential('654321');
-        $this->assertFalse($this->authenticator->authenticate($currentUser));
+        $authenticator->setIdentity('mdecaffmeyer@gmail.com');
+        $authenticator->setCredential('654321');
+        $this->assertFalse($authenticator->authenticate($currentUser));
     }
 
-    private function insertDb($db, $tableName, array $arrNameValuePairs)
+    private function insert(PDO $pdo, $tableName, array $arrNameValuePairs)
     {
         $sql = 'INSERT INTO '.$tableName.'(';
         $prefix = '';
@@ -109,7 +109,7 @@ class DbAuthenticatorTest extends PHPUnit_Framework_TestCase
             $prefix = ', :';
         }
         $sql .= ')';
-        $stmt = $db->prepare($sql);
+        $stmt = $pdo->prepare($sql);
         foreach ($arrNameValuePairs as $param => $value) {
             $stmt->bindValue(':'.$param, $value);
         }
