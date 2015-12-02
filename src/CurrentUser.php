@@ -14,7 +14,7 @@ namespace Mendo\Auth;
 /**
  * @author Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>
  */
-class CurrentUser implements CurrentUserInterface
+class CurrentUser implements CurrentUserInterface, AuthenticatableUserInterface
 {
     private $id;
     private $login;

@@ -19,7 +19,7 @@ namespace Mendo\Auth;
  *
  * @author Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>
  */
-interface CurrentUserInterface extends AuthenticatableUserInterface
+interface CurrentUserInterface
 {
     /**
      * @return bool
