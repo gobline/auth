@@ -20,7 +20,7 @@
     },
     "require": {
         "php": ">=5.6.0",
-        "gobline/session": "~1.0"
+        "gobline/session": "~2.0"
     },
     "require-dev": {
         "pimple/pimple": "3.0.*@dev",
