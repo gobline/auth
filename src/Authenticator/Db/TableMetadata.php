@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Mendo Framework
+ * Gobline Framework
  *
  * (c) Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>
  *
@@ -9,7 +9,7 @@
  * file that was distributed with this source code.
  */
 
-namespace Mendo\Auth\Authenticator\Db;
+namespace Gobline\Auth\Authenticator\Db;
 
 /**
  * @author Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>

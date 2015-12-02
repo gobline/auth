@@ -1,7 +1,7 @@
-# Auth Component - Mendo Framework
+# Authentication component
 
 Most oftenly, your server needs a way to identify the user making the current request.
-The Mendo Auth component provides a means for representing the user making the request and 
+The authentication component provides a means for representing the user making the request and 
 for authenticating this user against a DB or other datasource.
 
 * the ```CurrentUserInterface``` allows the server to **identify** the user making the current request.
@@ -12,7 +12,7 @@ for authenticating this user against a DB or other datasource.
 In order to authenticate a user, you will first need to create a ```CurrentUser``` object.
 
 ```php
-$user = new Mendo\Auth\CurrentUser();
+$user = new Gobline\Auth\CurrentUser();
 ```
 
 Once we have a user, we can authenticate the latter using an adapter implementing ```AuthenticatorInterface```.
@@ -23,8 +23,8 @@ Firstly, we will have to set up the adapter. The ```DbAuthenticator``` requires 
 an instance of ```TableMetadata``` wrapping some metadata about the DB table we are authenticating against.
 
 ```php
-use Mendo\Auth\Authenticator\Db\TableMetadata;
-use Mendo\Auth\Authenticator\Db\DbAuthenticator;
+use Gobline\Auth\Authenticator\Db\TableMetadata;
+use Gobline\Auth\Authenticator\Db\DbAuthenticator;
 
 $authenticator = new DbAuthenticator($pdo, new TableMetadata('users'));
 ```
@@ -38,8 +38,8 @@ By default, ```TableMetadata``` assumes that
 Customize these metadata for your database.
 
 ```php
-use Mendo\Auth\Authenticator\Db\TableMetadata;
-use Mendo\Auth\Authenticator\Db\DbAuthenticator;
+use Gobline\Auth\Authenticator\Db\TableMetadata;
+use Gobline\Auth\Authenticator\Db\DbAuthenticator;
 
 $metadata = new TableMetadata('users');
 $metadata
@@ -54,7 +54,7 @@ $authenticator = new DbAuthenticator($pdo, $metadata);
 
 *You will also notice that besides the id, login and password, 
 it is possible to specify a column containing the role (or group, type) of the user.
-This is especially useful when combining the Mendo Auth component with an ACL component
+This is especially useful when combining the authentication component with an ACL component
 (which is usually the case).*
 
 Now that we have set up our adapter, it's time to authenticate the user.
@@ -81,19 +81,19 @@ It can additionally add the user's role (for ACL) and other column data.
 
 While the above works perfectly for the first request, the user's data will be lost on subsequent requests.
 One way to achieve persistence is to store the user data in session. 
-```Mendo\Auth\Persistence\Session``` acts like a decorator over ```Mendo\Auth\CurrentUser``` (or any 
-```Mendo\Auth\CurrentUserInterface``` implementation), allowing to persist the data in session.
+```Gobline\Auth\Persistence\Session``` acts like a decorator over ```Gobline\Auth\CurrentUser``` (or any 
+```Gobline\Auth\CurrentUserInterface``` implementation), allowing to persist the data in session.
 
 ```php
-$user = new Mendo\Auth\CurrentUser();
-$user = new Mendo\Auth\Persistence\Session($user);
+$user = new Gobline\Auth\CurrentUser();
+$user = new Gobline\Auth\Persistence\Session($user);
 ```
 
 ## Installation
 
-You can install Mendo Auth using the dependency management tool [Composer](https://getcomposer.org/).
+You can install Gobline Auth using the dependency management tool [Composer](https://getcomposer.org/).
 Run the *require* command to resolve and download the dependencies:
 
 ```
-composer require mendoframework/auth
+composer require gobline/auth
 ```

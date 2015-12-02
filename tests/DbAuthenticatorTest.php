@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Mendo Framework
+ * Gobline Framework
  *
  * (c) Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>
  *
@@ -9,9 +9,9 @@
  * file that was distributed with this source code.
  */
 
-use Mendo\Auth\CurrentUser;
-use Mendo\Auth\Authenticator\Db\DbAuthenticator;
-use Mendo\Auth\Authenticator\Db\TableMetadata;
+use Gobline\Auth\CurrentUser;
+use Gobline\Auth\Authenticator\Db\DbAuthenticator;
+use Gobline\Auth\Authenticator\Db\TableMetadata;
 use \PDO;
 
 /**

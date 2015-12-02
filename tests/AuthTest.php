@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Mendo Framework
+ * Gobline Framework
  *
  * (c) Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>
  *
@@ -9,10 +9,10 @@
  * file that was distributed with this source code.
  */
 
-use Mendo\Auth\Authenticator\AuthenticatorInterface;
-use Mendo\Auth\CurrentUser;
-use Mendo\Auth\AuthenticatableUserInterface;
-use Mendo\Auth\Persistence\Session;
+use Gobline\Auth\Authenticator\AuthenticatorInterface;
+use Gobline\Auth\CurrentUser;
+use Gobline\Auth\AuthenticatableUserInterface;
+use Gobline\Auth\Persistence\Session;
 
 /**
  * @author Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>
