@@ -111,7 +111,9 @@ class CurrentUser implements CurrentUserInterface
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $role
+     *
+     * @throws \InvalidArgumentException
      */
     public function setRoleUnauthenticated($role)
     {

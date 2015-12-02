@@ -47,13 +47,6 @@ interface CurrentUserInterface extends AuthenticatableUserInterface
     public function getRole();
 
     /**
-     * @param string $role
-     *
-     * @throws \InvalidArgumentException
-     */
-    public function setRoleUnauthenticated($role);
-
-    /**
      * @param mixed $name
      *
      * @throws \InvalidArgumentException
