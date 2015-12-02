@@ -1,7 +1,7 @@
 <?php
 
 /*
- * Mendo Framework
+ * Gobline Framework
  *
  * (c) Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>
  *
@@ -9,10 +9,11 @@
  * file that was distributed with this source code.
  */
 
-namespace Mendo\Auth\Persistence;
+namespace Gobline\Auth\Persistence;
 
-use Mendo\Auth\CurrentUserInterface;
-use Mendo\Session\NamespacedSession;
+use Gobline\Auth\CurrentUserInterface;
+use Gobline\Auth\AuthenticatableUserInterface;
+use Gobline\Session\NamespacedSession;
 
 /**
  * Allows to maintain the current user in session.
@@ -20,34 +21,57 @@ use Mendo\Session\NamespacedSession;
  *
  * @author Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>
  */
-class Session implements CurrentUserInterface
+class CurrentUser implements CurrentUserInterface, AuthenticatableUserInterface
 {
-    const SESSION_NAMESPACE = 'Mendo_Auth';
+    const SESSION_NAMESPACE = 'Gobline_Auth';
 
     private $user;
     private $session;
+    private $expirationSeconds = 3600;
 
     /**
      * @param CurrentUserInterface $user
      */
     public function __construct(CurrentUserInterface $user)
     {
+        $this->user = $user;
+    }
+
+    private function load()
+    {
         $this->session = new NamespacedSession(self::SESSION_NAMESPACE);
 
         if ($this->session->has('id')) {
-            $user->setId($this->session->get('id'));
+            $this->user->setId($this->session->get('id'));
         }
         if ($this->session->has('login')) {
-            $user->setLogin($this->session->get('login'));
+            $this->user->setLogin($this->session->get('login'));
         }
         if ($this->session->has('role')) {
-            $user->setRole($this->session->get('role'));
+            $this->user->setRole($this->session->get('role'));
         }
         if ($this->session->has('properties')) {
-            $user->setProperties($this->session->get('properties'));
+            $this->user->setProperties($this->session->get('properties'));
         }
 
-        $this->user = $user;
+        if ($this->isAuthenticated()) {
+            if ($this->isSessionExpired()) {
+                $this->session->clearAll();
+                $this->user->clearIdentity();
+            } else {
+                $_SESSION['time'] = time();
+            }
+        }
+    }
+
+    public function isSessionExpired()
+    {
+        return isset($_SESSION['time']) && time() > ($_SESSION['time'] + $this->expirationSeconds);
+    }
+
+    public function setExpirationSeconds($seconds)
+    {
+        $this->expirationSeconds = $seconds;
     }
 
     /**
@@ -55,6 +79,10 @@ class Session implements CurrentUserInterface
      */
     public function isAuthenticated()
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         return $this->user->isAuthenticated();
     }
 
@@ -63,6 +91,10 @@ class Session implements CurrentUserInterface
      */
     public function clearIdentity()
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         $this->session->clearAll();
         $this->user->clearIdentity();
     }
@@ -72,6 +104,10 @@ class Session implements CurrentUserInterface
      */
     public function getId()
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         return $this->user->getId();
     }
 
@@ -80,8 +116,14 @@ class Session implements CurrentUserInterface
      */
     public function setId($id)
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         $this->user->setId($id);
         $this->session->set('id', $id);
+
+        $_SESSION['time'] = time();
     }
 
     /**
@@ -89,6 +131,10 @@ class Session implements CurrentUserInterface
      */
     public function getLogin()
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         return $this->user->getLogin();
     }
 
@@ -97,6 +143,10 @@ class Session implements CurrentUserInterface
      */
     public function setLogin($login)
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         $this->user->setLogin($login);
         $this->session->set('login', $login);
     }
@@ -106,6 +156,10 @@ class Session implements CurrentUserInterface
      */
     public function getRole()
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         return $this->user->getRole();
     }
 
@@ -114,12 +168,18 @@ class Session implements CurrentUserInterface
      */
     public function setRole($role)
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         $this->user->setRole($role);
         $this->session->set('role', $role);
     }
 
     /**
-     * {@inheritdoc}
+     * @param string $role
+     *
+     * @throws \InvalidArgumentException
      */
     public function setRoleUnauthenticated($role)
     {
@@ -131,6 +191,10 @@ class Session implements CurrentUserInterface
      */
     public function hasProperty($name)
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         return $this->user->hasProperty($name);
     }
 
@@ -139,6 +203,10 @@ class Session implements CurrentUserInterface
      */
     public function getProperty(...$args)
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         return $this->user->getProperty(...$args);
     }
 
@@ -147,6 +215,10 @@ class Session implements CurrentUserInterface
      */
     public function addProperty($name, $value)
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         $this->user->addProperty($name, $value);
         $this->session->set('properties', $this->user->getProperties());
     }
@@ -156,6 +228,10 @@ class Session implements CurrentUserInterface
      */
     public function removeProperty($name)
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         $this->user->removeProperty($name);
         $this->session->set('properties', $this->user->getProperties());
     }
@@ -165,6 +241,10 @@ class Session implements CurrentUserInterface
      */
     public function getProperties()
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         return $this->user->getProperties();
     }
 
@@ -173,6 +253,10 @@ class Session implements CurrentUserInterface
      */
     public function setProperties(array $properties)
     {
+        if (!$this->session) {
+            $this->load();
+        }
+
         $this->user->setProperties($properties);
         $this->session->set('properties', $properties);
     }
