@@ -23,7 +23,6 @@
         "gobline/session": "~2.0"
     },
     "require-dev": {
-        "pimple/pimple": "3.0.*@dev",
         "phpunit/phpunit": "4.3.*@dev",
         "fabpot/php-cs-fixer": "*@dev"
     },
