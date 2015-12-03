@@ -14,6 +14,6 @@ namespace Gobline\Auth\Exception;
 /**
  * @author Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>
  */
-class NotAuthenticatedException extends \RuntimeException 
+class NotAuthenticatedException extends \RuntimeException
 {
 }

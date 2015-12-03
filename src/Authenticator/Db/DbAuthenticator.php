@@ -13,7 +13,7 @@ namespace Gobline\Auth\Authenticator\Db;
 
 use Gobline\Auth\Authenticator\AuthenticatorInterface;
 use Gobline\Auth\AuthenticatableUserInterface;
-use \PDO;
+use PDO;
 
 /**
  * @author Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>

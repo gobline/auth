@@ -35,7 +35,7 @@ class CurrentUserConfigurator implements ServiceConfiguratorInterface
 
         if ($persistence === 'session') {
             return new CurrentUser($user);
-        } 
+        }
 
         throw new \RuntimeException('$persistence "'.$persistence.'" unknown');
     }
