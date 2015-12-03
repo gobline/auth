@@ -12,7 +12,7 @@
 use Gobline\Auth\Authenticator\AuthenticatorInterface;
 use Gobline\Auth\CurrentUser;
 use Gobline\Auth\AuthenticatableUserInterface;
-use Gobline\Auth\Persistence\Session;
+use Gobline\Auth\Persistence\CurrentUser as SessionDecorator;
 
 /**
  * @author Mathieu Decaffmeyer <mdecaffmeyer@gmail.com>
@@ -126,7 +126,7 @@ class AuthTest extends PHPUnit_Framework_TestCase
         @session_destroy();
         @session_start();
 
-        $currentUser = new Session(new CurrentUser());
+        $currentUser = new SessionDecorator(new CurrentUser());
 
         $this->authenticator->setIdentity('user1');
         $this->authenticator->setCredential('password1');
