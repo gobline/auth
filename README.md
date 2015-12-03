@@ -81,12 +81,12 @@ It can additionally add the user's role (for ACL) and other column data.
 
 While the above works perfectly for the first request, the user's data will be lost on subsequent requests.
 One way to achieve persistence is to store the user data in session. 
-```Gobline\Auth\Persistence\Session``` acts like a decorator over ```Gobline\Auth\CurrentUser``` (or any 
+```Gobline\Auth\Persistence\CurrentUser``` acts like a decorator over ```Gobline\Auth\CurrentUser``` (or any 
 ```Gobline\Auth\CurrentUserInterface``` implementation), allowing to persist the data in session.
 
 ```php
 $user = new Gobline\Auth\CurrentUser();
-$user = new Gobline\Auth\Persistence\Session($user);
+$user = new Gobline\Auth\Persistence\CurrentUser($user);
 ```
 
 ## Installation
