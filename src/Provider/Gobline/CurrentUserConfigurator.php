@@ -20,7 +20,7 @@ use Gobline\Auth\Persistence\CurrentUser;
  */
 class CurrentUserConfigurator implements ServiceConfiguratorInterface
 {
-    public function configure($user, array $config, ContainerInterface $container)
+    public function configure($user, array $config)
     {
         $persistence = isset($config['persistence']) ? $config['persistence'] : null;
         $roleUnauthenticated = isset($config['roleUnauthenticated']) ? $config['roleUnauthenticated'] : null;
